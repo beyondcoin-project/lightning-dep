@@ -1251,7 +1251,7 @@ struct bitcoind *new_bitcoind(const tal_t *ctx,
 	struct bitcoind *bitcoind = tal(ctx, struct bitcoind);
 
 	/* Use Beyondcoin by default */
-	bitcoind->chainparams = chainparams_for_network("beyondcoin");
+	// bitcoind->chainparams = chainparams_for_network("beyondcoin");
 	bitcoind->cli = NULL;
 	bitcoind->datadir = NULL;
 	bitcoind->ld = ld;
