@@ -2,18 +2,20 @@
 
 c-lightning is a lighweight, highly customizable and [standard compliant][std] implementation of the Lightning Network protocol.
 
-* [Getting Started](#getting-started)
-    * [Installation](#installation)
-    * [Starting lightningd](#starting-lightningd)
-    * [Using the JSON-RPC Interface](#using-the-json-rpc-interface)
-    * [Care And Feeding Of Your New Lightning Node](#care-and-feeding-of-your-new-lightning-node)
-    * [Opening A Channel](#opening-a-channel)
-	* [Sending and Receiving Payments](#sending-and-receiving-payments)
-	* [Configuration File](#configuration-file)
-* [Further Information](#further-information)
-    * [Pruning](#pruning)
-    * [HD wallet encryption](#hd-wallet-encryption)
-	* [Developers](#developers)
+- [c-lightning: A specification compliant Lightning Network implementation in C](#c-lightning-a-specification-compliant-lightning-network-implementation-in-c)
+  - [Project Status](#project-status)
+  - [Getting Started](#getting-started)
+    - [Installation](#installation)
+    - [Starting lightningd](#starting-lightningd)
+    - [Using The JSON-RPC Interface](#using-the-json-rpc-interface)
+    - [Care And Feeding Of Your New Lightning Node](#care-and-feeding-of-your-new-lightning-node)
+    - [Opening A Channel](#opening-a-channel)
+    - [Sending and Receiving Payments](#sending-and-receiving-payments)
+  - [Configuration File](#configuration-file)
+  - [Further information](#further-information)
+    - [Pruning](#pruning)
+    - [HD wallet encryption](#hd-wallet-encryption)
+    - [Developers](#developers)
 
 ## Project Status
 
@@ -22,60 +24,60 @@ c-lightning is a lighweight, highly customizable and [standard compliant][std] i
 [![Irc][IRC]][IRC-link]
 [![Documentation Status](https://readthedocs.org/projects/lightning/badge/?version=docs)][docs]
 
-This implementation has been in production use on the Bitcoin mainnet since early 2018, with the launch of the [Blockstream Store][blockstream-store-blog].
+This implementation has been in production use on the Beyondcoin mainnet since late 2019, <!--with the launch of the [Blockstream Store][blockstream-store-blog]-->.
 We recommend getting started by experimenting on `testnet` (or `regtest`), but the implementation is considered stable and can be safely used on mainnet.
 
 Any help testing the implementation, reporting bugs, or helping with outstanding issues is very welcome.
-Don't hesitate to reach out to us on IRC at [#lightning-dev @ freenode.net][irc1], [#c-lightning @ freenode.net][irc2], or on the implementation-specific mailing list [c-lightning@lists.ozlabs.org][ml1], or on the Lightning Network-wide mailing list [lightning-dev@lists.linuxfoundation.org][ml2].
+Don't hesitate to reach out to us <!-- on IRC at [#bynd-lightning-dev @ freenode.net][irc1], [#c-lightning @ freenode.net][irc2], or on the implementation-specific mailing list [c-lightning@lists.ozlabs.org][ml1], or on the Lightning Network-wide mailing list [lightning-dev@lists.linuxfoundation.org][ml2]--> via email at [lightning@beyondcoin.io][ml1].
 
 ## Getting Started
 
-c-lightning only works on Linux and Mac OS, and requires a locally (or remotely) running `bitcoind` (version 0.16 or above) that is fully caught up with the network you're testing on.
-Pruning (`prune=n` option in `bitcoin.conf`) is partially supported, see [here](#pruning) for more details.
+c-lightning only works on Linux and Mac OS, and requires a locally (or remotely) running `beyondcoind` (version 0.16 or above) that is fully caught up with the network you're testing on.
+Pruning (`prune=n` option in `beyondcoin.conf`) is partially supported, see [here](#pruning) for more details.
 
 ### Installation
 
-There are 4 supported installation options:
+There are 3 supported installation options:
 
- - Installation from the [Ubuntu PPA][ppa]
+ <!-- - Installation from the [Ubuntu PPA][ppa] -->
  - Installation of a pre-compiled binary from the [release page][releases] on Github
  - Using one of the [provided docker images][dockerhub] on the Docker Hub
  - Compiling the source code yourself as described in the [installation documentation](doc/INSTALL.md).
-
+<!-->
 For the impatient here's the gist of it for Ubuntu:
 
 ```bash
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -u ppa:bitcoin/bitcoin
 sudo add-apt-repository -u ppa:lightningnetwork/ppa
-sudo apt-get install bitcoind lightningd
+sudo apt-get install beyondcoind lightningd
 ```
-
+-->
 ### Starting `lightningd`
 
 If you want to experiment with `lightningd`, there's a script to set
-up a `bitcoind` regtest test network of two local lightning nodes,
+up a `beyondcoind` regtest test network of two local lightning nodes,
 which provides a convenient `start_ln` helper:
 
 ```bash
 . contrib/startup_regtest.sh
 ```
 
-To test with real bitcoin,  you will need to have a local `bitcoind` node running:
+To test with real beyondcoin,  you will need to have a local `beyondcoind` node running:
 
 ```bash
-bitcoind -daemon
+beyondcoind -daemon
 ```
 
-Wait until `bitcoind` has synchronized with the network.
+Wait until `beyondcoind` has synchronized with the network.
 
-Make sure that you do not have `walletbroadcast=0` in your `~/.bitcoin/bitcoin.conf`, or you may run into trouble.
+Make sure that you do not have `walletbroadcast=0` in your `~/.beyondcoin/beyondcoin.conf`, or you may run into trouble.
 Notice that running `lightningd` against a pruned node may cause some issues if not managed carefully, see [below](#pruning) for more information.
 
 You can start `lightningd` with the following command:
 
 ```bash
-lightningd --network=bitcoin --log-level=debug
+lightningd --network=beyondcoin --log-level=debug
 ```
 
 This creates a `.lightning/` subdirectory in your home directory: see `man -l doc/lightningd.8` (or https://lightning.readthedocs.io/) for more runtime options.
@@ -89,7 +91,7 @@ will offer specific information on that command.
 
 Useful commands:
 
-* [newaddr](doc/lightning-newaddr.7.md): get a bitcoin address to deposit funds into your lightning node.
+* [newaddr](doc/lightning-newaddr.7.md): get a beyondcoin address to deposit funds into your lightning node.
 * [listfunds](doc/lightning-listfunds.7.md): see where your funds are.
 * [connect](doc/lightning-connect.7.md): connect to another lightning node.
 * [fundchannel](doc/lightning-fundchannel.7.md): create a channel to another connected node.
@@ -128,7 +130,7 @@ open a channel:
 lightning-cli newaddr
 
 # Returns a transaction id <txid>
-bitcoin-cli sendtoaddress <address> <amount_in_bitcoins>
+beyondcoin-cli sendtoaddress <address> <amount_in_beyondcoins>
 ```
 
 `lightningd` will register the funds once the transaction is confirmed.
@@ -191,24 +193,24 @@ interfaces) for more sophisticated use.
 Command line options will always override the values in the configuration file.
 
 To use a configuration file, create a file named `config` within your top-level lightning directory or network subdirectory
-(eg. `~/.lightning/config` or `~/.lightning/bitcoin/config`).  See `man -l doc/lightningd-config.5`.
+(eg. `~/.lightning/config` or `~/.lightning/beyondcoin/config`).  See `man -l doc/lightningd-config.5`.
 
 ## Further information
 
 ### Pruning
 
-c-lightning requires JSON-RPC access to a fully synchronized `bitcoind` in order to synchronize with the Bitcoin network.
-Access to ZeroMQ is not required and `bitcoind` does not need to be run with `txindex` like other implementations.
-The lightning daemon will poll `bitcoind` for new blocks that it hasn't processed yet, thus synchronizing itself with `bitcoind`.
-If `bitcoind` prunes a block that c-lightning has not processed yet, e.g., c-lightning was not running for a prolonged period, then `bitcoind` will not be able to serve the missing blocks, hence c-lightning will not be able to synchronize anymore and will be stuck.
-In order to avoid this situation you should be monitoring the gap between c-lightning's blockheight using `lightning-cli getinfo` and `bitcoind`'s blockheight using `bitcoin-cli getblockchaininfo`.
+c-lightning requires JSON-RPC access to a fully synchronized `beyondcoind` in order to synchronize with the Beyondcoin network.
+Access to ZeroMQ is not required and `beyondcoind` does not need to be run with `txindex` like other implementations.
+The lightning daemon will poll `beyondcoind` for new blocks that it hasn't processed yet, thus synchronizing itself with `beyondcoind`.
+If `beyondcoind` prunes a block that c-lightning has not processed yet, e.g., c-lightning was not running for a prolonged period, then `beyondcoind` will not be able to serve the missing blocks, hence c-lightning will not be able to synchronize anymore and will be stuck.
+In order to avoid this situation you should be monitoring the gap between c-lightning's blockheight using `lightning-cli getinfo` and `beyondcoind`'s blockheight using `beyondcoin-cli getblockchaininfo`.
 If the two blockheights drift apart it might be necessary to intervene.
 
 ### HD wallet encryption
 
 You can encrypt the `hsm_secret` content (which is used to derive the HD wallet's master key) by passing the `--encrypted-hsm` startup argument, or by using the `hsmtool` (which you can find in the `tool/` directory at the root of this repo) with the `encrypt` method. You can unencrypt an encrypted `hsm_secret` using the `hsmtool` with the `decrypt` method.
 
-If you encrypt your `hsm_secret`, you will have to pass the `--encrypted-hsm` startup option to `lightningd`. Once your `hsm_secret` is encrypted, you __will not__ be able to access your funds without your password, so please beware with your password management. Also beware of not feeling too safe with an encrypted `hsm_secret`: unlike for `bitcoind` where the wallet encryption can restrict the usage of some RPC command, `lightningd` always need to access keys from the wallet which is thus __not locked__ (yet), even with an encrypted BIP32 master seed.
+If you encrypt your `hsm_secret`, you will have to pass the `--encrypted-hsm` startup option to `lightningd`. Once your `hsm_secret` is encrypted, you __will not__ be able to access your funds without your password, so please beware with your password management. Also beware of not feeling too safe with an encrypted `hsm_secret`: unlike for `beyondcoind` where the wallet encryption can restrict the usage of some RPC command, `lightningd` always need to access keys from the wallet which is thus __not locked__ (yet), even with an encrypted BIP32 master seed.
 
 ### Developers
 
