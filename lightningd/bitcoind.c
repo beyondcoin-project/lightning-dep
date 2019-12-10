@@ -1,4 +1,4 @@
-/* Code for talking to bitcoind.  We use bitcoin-cli. */
+/* Code for talking to beyondcoind.  We use beyondcoin-cli. */
 #include "bitcoin/base58.h"
 #include "bitcoin/block.h"
 #include "bitcoin/feerate.h"
@@ -23,7 +23,7 @@
 #include <inttypes.h>
 #include <lightningd/chaintopology.h>
 
-/* Bitcoind's web server has a default of 4 threads, with queue depth 16.
+/* Beyondcoin's web server has a default of 4 threads, with queue depth 16.
  * It will *fail* rather than queue beyond that, so we must not stress it!
  *
  * This is how many request for each priority level we have.
@@ -187,7 +187,7 @@ static void bcli_finished(struct io_conn *conn UNUSED, struct bitcoin_cli *bcli)
 	/* If it took over 10 seconds, that's rather strange. */
 	if (msec > 10000)
 		log_unusual(bitcoind->log,
-			    "bitcoin-cli: finished %s (%"PRIu64" ms)",
+			    "beyondcoin-cli: finished %s (%"PRIu64" ms)",
 			    bcli_args(tmpctx, bcli), msec);
 
 	assert(bitcoind->num_requests[prio] > 0);
@@ -255,7 +255,7 @@ static void next_bcli(struct bitcoind *bitcoind, enum bitcoind_prio prio)
 
 	bitcoind->num_requests[prio]++;
 
-	/* This lifetime is attached to bitcoind command fd */
+	/* This lifetime is attached to beyondcoind command fd */
 	conn = notleak(io_new_conn(bitcoind, bcli->fd, output_init, bcli));
 	io_set_finish(conn, bcli_finished, bcli);
 }
@@ -550,7 +550,7 @@ static bool process_gettxout(struct bitcoin_cli *bcli)
 	struct bitcoin_tx_output out;
 	bool valid;
 
-	/* As of at least v0.15.1.0, bitcoind returns "success" but an empty
+	/* As of at least v0.15.1.0, beyondcoind returns "success" but an empty
 	   string on a spent gettxout */
 	if (*bcli->exitstatus != 0 || bcli->output_bytes == 0) {
 		cb(bcli->bitcoind, NULL, bcli->cb_arg);
@@ -574,7 +574,7 @@ static bool process_gettxout(struct bitcoin_cli *bcli)
 		      bcli_args(tmpctx, bcli),
 		      (int)bcli->output_bytes, bcli->output);
 
-	if (!json_to_bitcoin_amount(bcli->output, valuetok, &out.amount.satoshis)) /* Raw: talking to bitcoind */
+	if (!json_to_bitcoin_amount(bcli->output, valuetok, &out.amount.satoshis)) /* Raw: talking to beyondcoind */
 		fatal("%s: had bad value (%.*s)?",
 		      bcli_args(tmpctx, bcli),
 		      (int)bcli->output_bytes, bcli->output);
@@ -602,7 +602,7 @@ static bool process_gettxout(struct bitcoin_cli *bcli)
 }
 
 /**
- * process_getblock -- Retrieve a block from bitcoind
+ * process_getblock -- Retrieve a block from beyondcoind
  *
  * Used to resolve a `txoutput` after identifying the blockhash, and
  * before extracting the outpoint from the UTXO.
@@ -712,7 +712,7 @@ void bitcoind_getoutput_(struct bitcoind *bitcoind,
 	go->outnum = outnum;
 	go->cbarg = arg;
 
-	/* We may not have topology ourselves that far back, so ask bitcoind */
+	/* We may not have topology ourselves that far back, so ask beyondcoind */
 	start_bitcoin_cli(bitcoind, NULL, process_getblockhash_for_txout,
 			  true, BITCOIND_LOW_PRIO, cb, go,
 			  "getblockhash", take(tal_fmt(NULL, "%u", blocknum)),
@@ -882,7 +882,7 @@ static void process_getfilteredblock_step1(struct bitcoind *bitcoind,
 					   const struct bitcoin_blkid *blkid,
 					   struct filteredblock_call *call)
 {
-	/* If we were unable to fetch the block hash (bitcoind doesn't know
+	/* If we were unable to fetch the block hash (beyondcoind doesn't know
 	 * about a block at that height), we can short-circuit and just call
 	 * the callback. */
 	if (!blkid)
@@ -939,7 +939,7 @@ void bitcoind_getfilteredblock_(struct bitcoind *bitcoind, u32 height,
 				void *arg)
 {
 	/* Stash the call context for when we need to call the callback after
-	 * all the bitcoind calls we need to perform. */
+	 * all the beyondcoind calls we need to perform. */
 	struct filteredblock_call *call = tal(bitcoind, struct filteredblock_call);
 	/* If this is the first request, we should start processing it. */
 	bool start = list_empty(&bitcoind->pending_getfilteredblock);
@@ -999,7 +999,7 @@ static bool process_getclientversion(struct bitcoin_cli *bcli)
 	}
 
 	if (version < min_version)
-		fatal("Unsupported bitcoind version? bitcoind version: %"PRIu64","
+		fatal("Unsupported beyondcoind version? beyondcoind version: %"PRIu64","
 		      " supported minimum version: %"PRIu64"",
 		      version, min_version);
 
@@ -1064,17 +1064,17 @@ static void is_bitcoind_synced_yet(struct bitcoind *bitcoind,
 	} else if (headers != blocks) {
 		if (initial)
 			log_unusual(bitcoind->log,
-				    "Waiting for bitcoind to catch up"
+				    "Waiting for beyondcoind to catch up"
 				    " (%u blocks of %u)",
 				    blocks, headers);
 		else
 			log_debug(bitcoind->log,
-				  "Waiting for bitcoind to catch up"
+				  "Waiting for beyondcoind to catch up"
 				  " (%u blocks of %u)",
 				  blocks, headers);
 	} else {
 		if (!initial)
-			log_info(bitcoind->log, "Bitcoind now synced.");
+			log_info(bitcoind->log, "Beyondcoind now synced.");
 		bitcoind->synced = true;
 		return;
 	}
@@ -1136,8 +1136,8 @@ static void fatal_bitcoind_failure(struct bitcoind *bitcoind, const char *error_
 	const char **cmd = cmdarr(bitcoind, bitcoind, "echo", NULL);
 
 	fprintf(stderr, "%s\n\n", error_message);
-	fprintf(stderr, "Make sure you have bitcoind running and that bitcoin-cli is able to connect to bitcoind.\n\n");
-	fprintf(stderr, "You can verify that your Bitcoin Core installation is ready for use by running:\n\n");
+	fprintf(stderr, "Make sure you have beyondcoind running and that beyondcoin-cli is able to connect to beyondcoind.\n\n");
+	fprintf(stderr, "You can verify that your Beyondcoin Core installation is ready for use by running:\n\n");
 	fprintf(stderr, "    $ %s 'hello world'\n", args_string(cmd, cmd));
 	tal_free(cmd);
 	exit(1);
@@ -1180,7 +1180,7 @@ static char* check_blockchain_from_bitcoincli(const tal_t *ctx,
 
 	if(!json_tok_streq(output, valuetok,
 			   chainparams->bip70_name))
-		return tal_fmt(ctx, "Error blockchain for bitcoin-cli?"
+		return tal_fmt(ctx, "Error blockchain for beyondcoin-cli?"
 			       " Should be: %s",
 			       chainparams->bip70_name);
 
@@ -1200,7 +1200,7 @@ void wait_for_bitcoind(struct bitcoind *bitcoind)
 		child = pipecmdarr(NULL, &from, &from, cast_const2(char **,cmd));
 		if (child < 0) {
 			if (errno == ENOENT) {
-				fatal_bitcoind_failure(bitcoind, "bitcoin-cli not found. Is bitcoin-cli (part of Bitcoin Core) available in your PATH?");
+				fatal_bitcoind_failure(bitcoind, "beyondcoin-cli not found. Is beyondcoin-cli (part of Beyondcoin Core) available in your PATH?");
 			}
 			fatal("%s exec failed: %s", cmd[0], strerror(errno));
 		}
@@ -1223,12 +1223,12 @@ void wait_for_bitcoind(struct bitcoind *bitcoind)
 			break;
 		}
 
-		/* bitcoin/src/rpc/protocol.h:
+		/* beyondcoin/src/rpc/protocol.h:
 		 *	RPC_IN_WARMUP = -28, //!< Client still warming up
 		 */
 		if (WEXITSTATUS(status) != 28) {
 			if (WEXITSTATUS(status) == 1) {
-				fatal_bitcoind_failure(bitcoind, "Could not connect to bitcoind using bitcoin-cli. Is bitcoind running?");
+				fatal_bitcoind_failure(bitcoind, "Could not connect to beyondcoind using beyondcoin-cli. Is beyondcoind running?");
 			}
 			fatal("%s exited with code %i: %s",
 			      cmd[0], WEXITSTATUS(status), output);
@@ -1236,7 +1236,7 @@ void wait_for_bitcoind(struct bitcoind *bitcoind)
 
 		if (!printed) {
 			log_unusual(bitcoind->log,
-				    "Waiting for bitcoind to warm up...");
+				    "Waiting for beyondcoind to warm up...");
 			printed = true;
 		}
 		sleep(1);

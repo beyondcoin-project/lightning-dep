@@ -152,7 +152,7 @@ static void broadcast_remainder(struct bitcoind *bitcoind,
 			   broadcast_remainder, txs);
 }
 
-/* FIXME: This is dumb.  We can group txs and avoid bothering bitcoind
+/* FIXME: This is dumb.  We can group txs and avoid bothering beyondcoind
  * if any one tx is in the main chain. */
 static void rebroadcast_txs(struct chain_topology *topo, struct command *cmd)
 {
@@ -602,7 +602,7 @@ static void updates_complete(struct chain_topology *topo)
 		topo->prev_tip = topo->tip;
 	}
 
-	/* If bitcoind is synced, we're now synced. */
+	/* If beyondcoind is synced, we're now synced. */
 	if (topo->bitcoind->synced && !topology_synced(topo)) {
 		struct sync_waiter *w;
 		struct list_head *list = topo->sync_waiters;
@@ -804,7 +804,7 @@ static void get_init_block(struct bitcoind *bitcoind,
 static void get_init_blockhash(struct bitcoind *bitcoind, u32 blockcount,
 			       struct chain_topology *topo)
 {
-	/* If bitcoind's current blockheight is below the requested
+	/* If beyondcoind's current blockheight is below the requested
 	 * height, refuse.  You can always explicitly request a reindex from
 	 * that block number using --rescan=. */
 	if (blockcount < topo->max_blockheight) {

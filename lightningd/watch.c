@@ -1,4 +1,4 @@
-/* Code to talk to bitcoind to watch for various events.
+/* Code to talk to beyondcoind to watch for various events.
  *
  * Here's what we want to know:
  *

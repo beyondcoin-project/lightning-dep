@@ -675,7 +675,7 @@ static void channel_config(struct lightningd *ld,
 	 * The sending node SHOULD:
 	 *...
 	 *   - set `dust_limit_satoshis` to a sufficient value to allow
-	 *     commitment transactions to propagate through the Bitcoin network.
+	 *     commitment transactions to propagate through the Beyondcoin network.
 	 */
 	ours->dust_limit = chainparams->dust_limit;
 	ours->max_htlc_value_in_flight = AMOUNT_MSAT(UINT64_MAX);

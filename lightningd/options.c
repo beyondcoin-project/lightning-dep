@@ -654,7 +654,7 @@ static char *list_features_and_exit(struct lightningd *ld)
 
 static char *opt_lightningd_usage(struct lightningd *ld)
 {
-	char *extra = tal_fmt(NULL, "\nA bitcoin lightning daemon (default "
+	char *extra = tal_fmt(NULL, "\nA beyondcoin lightning daemon (default "
 			"values shown for network: %s).", chainparams->network_name);
 	opt_usage_and_exit(extra);
 	tal_free(extra);

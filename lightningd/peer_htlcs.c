@@ -473,7 +473,7 @@ enum onion_type send_htlc_out(struct channel *out,
 
 	if (!topology_synced(out->peer->ld->topology)) {
 		log_info(out->log, "Attempt to send HTLC but still syncing"
-			 " with bitcoin network");
+			 " with beyondcoin network");
 		return WIRE_TEMPORARY_CHANNEL_FAILURE;
 	}
 
@@ -1546,7 +1546,7 @@ void peer_got_commitsig(struct channel *channel, const u8 *msg)
 	size_t i;
 	struct lightningd *ld = channel->peer->ld;
 
-	/* If we're not synced with bitcoin network, we can't accept
+	/* If we're not synced with beyondcoin network, we can't accept
 	 * any HTLCs.  We stall at this point, in the hope that it
 	 * won't take long! */
 	if (!topology_synced(ld->topology)) {

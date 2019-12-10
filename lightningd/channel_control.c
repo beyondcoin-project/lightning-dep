@@ -625,7 +625,7 @@ static struct channel *find_channel_by_id(const struct peer *peer,
 	return NULL;
 }
 
-/* Since this could vanish while we're checking with bitcoind, we need to save
+/* Since this could vanish while we're checking with beyondcoind, we need to save
  * the details and re-lookup.
  *
  * channel_id *should* be unique, but it can be set by the counterparty, so

@@ -25,10 +25,10 @@ enum bitcoind_prio {
 #define BITCOIND_NUM_PRIO (BITCOIND_HIGH_PRIO+1)
 
 struct bitcoind {
-	/* eg. "bitcoin-cli" */
+	/* eg. "beyondcoin-cli" */
 	char *cli;
 
-	/* -datadir arg for bitcoin-cli. */
+	/* -datadir arg for beyondcoin-cli. */
 	char *datadir;
 
 	/* Where to do logging. */
@@ -37,7 +37,7 @@ struct bitcoind {
 	/* Main lightningd structure */
 	struct lightningd *ld;
 
-	/* Is bitcoind synced?  If not, we retry. */
+	/* Is beyondcoind synced?  If not, we retry. */
 	bool synced;
 
 	/* How many high/low prio requests are we running (it's ratelimited) */
@@ -46,18 +46,18 @@ struct bitcoind {
 	/* Pending requests (high and low prio). */
 	struct list_head pending[BITCOIND_NUM_PRIO];
 
-	/* If non-zero, time we first hit a bitcoind error. */
+	/* If non-zero, time we first hit a beyondcoind error. */
 	unsigned int error_count;
 	struct timemono first_error_time;
 
 	/* Ignore results, we're shutting down. */
 	bool shutdown;
 
-	/* How long to keep trying to contact bitcoind
+	/* How long to keep trying to contact beyondcoind
 	 * before fatally exiting. */
 	u64 retry_timeout;
 
-	/* Passthrough parameters for bitcoin-cli */
+	/* Passthrough parameters for beyondcoin-cli */
 	char *rpcuser, *rpcpass, *rpcconnect, *rpcport;
 
 	struct list_head pending_getfilteredblock;

@@ -401,10 +401,10 @@ static void populate_secretstuff(void)
 	assert(bip32_key_version.bip32_privkey_version == BIP32_VER_MAIN_PRIVATE
 			|| bip32_key_version.bip32_privkey_version == BIP32_VER_TEST_PRIVATE);
 
-	/* Fill in the BIP32 tree for bitcoin addresses. */
+	/* Fill in the BIP32 tree for beyondcoin addresses. */
 	/* In libwally-core, the version BIP32_VER_TEST_PRIVATE is for testnet/regtest,
 	 * and BIP32_VER_MAIN_PRIVATE is for mainnet. For litecoin, we also set it like
-	 * bitcoin else.*/
+	 * beyondcoin else.*/
 	do {
 		hkdf_sha256(bip32_seed, sizeof(bip32_seed),
 			    &salt, sizeof(salt),
@@ -765,7 +765,7 @@ static struct io_plan *handle_ecdh(struct io_conn *conn,
 
 /*~ The specific routine to sign the channel_announcement message.  This is
  * defined in BOLT #7, and requires *two* signatures: one from this node's key
- * (to prove it's from us), and one from the bitcoin key used to create the
+ * (to prove it's from us), and one from the beyondcoin key used to create the
  * funding transaction (to prove we own the output). */
 static struct io_plan *handle_cannouncement_sig(struct io_conn *conn,
 						struct client *c,
@@ -954,7 +954,7 @@ static struct io_plan *handle_sign_commitment_tx(struct io_conn *conn,
 	derive_basepoints(&channel_seed,
 			  &local_funding_pubkey, NULL, &secrets, NULL);
 
-	/*~ Bitcoin signatures cover the (part of) the script they're
+	/*~ Beyondcoin signatures cover the (part of) the script they're
 	 * executing; the rules are a bit complex in general, but for
 	 * Segregated Witness it's simply the current script. */
 	funding_wscript = bitcoin_redeem_2of2(tmpctx,
@@ -1521,7 +1521,7 @@ static void hsm_unilateral_close_privkey(struct privkey *dst,
 	}
 }
 
-/* This gets the bitcoin private key needed to spend from our wallet. */
+/* This gets the beyondcoin private key needed to spend from our wallet. */
 static void hsm_key_for_utxo(struct privkey *privkey, struct pubkey *pubkey,
 			     const struct utxo *utxo)
 {
@@ -1565,7 +1565,7 @@ static void sign_all_inputs(struct bitcoin_tx *tx, struct utxo **utxos)
 		hsm_key_for_utxo(&inprivkey, &inkey, in);
 
 		/* It's either a p2wpkh or p2sh (we support that so people from
-		 * the last bitcoin era can put funds into the wallet) */
+		 * the last beyondcoin era can put funds into the wallet) */
 		wscript = p2wpkh_scriptcode(tmpctx, &inkey);
 		if (in->is_p2sh) {
 			/* For P2SH-wrapped Segwit, the (implied) redeemScript

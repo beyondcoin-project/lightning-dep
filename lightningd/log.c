@@ -695,7 +695,7 @@ char *arg_log_to_file(const char *arg, struct lightningd *ld)
 	if (!ld->log->lr->outf)
 		return tal_fmt(NULL, "Failed to open: %s", strerror(errno));
 
-	/* For convenience make a block of empty lines just like Bitcoin Core */
+	/* For convenience make a block of empty lines just like Beyondcoin Core */
 	size = ftell(ld->log->lr->outf);
 	if (size > 0)
 		fprintf(ld->log->lr->outf, "\n\n\n\n");

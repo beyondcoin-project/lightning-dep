@@ -5,7 +5,7 @@
  * and a few startup sanity checks.
  *
  * The role of this daemon is to start the subdaemons, shuffle peers
- * between them, handle the JSON RPC requests, bitcoind, the database
+ * between them, handle the JSON RPC requests, beyondcoind, the database
  * and centralize logging.  In theory, it doesn't trust the other
  * daemons, though we expect `hsmd` (which holds secret keys) to be
  * responsive.
@@ -691,8 +691,8 @@ int main(int argc, char *argv[])
 	test_subdaemons(ld);
 
 	/*~ Our "wallet" code really wraps the db, which is more than a simple
-	 * bitcoin wallet (though it's that too).  It also stores channel
-	 * states, invoices, payments, blocks and bitcoin transactions. */
+	 * beyondcoin wallet (though it's that too).  It also stores channel
+	 * states, invoices, payments, blocks and beyondcoin transactions. */
 	ld->wallet = wallet_new(ld, ld->timers);
 
 	/*~ We keep a filter of scriptpubkeys we're interested in. */
@@ -747,7 +747,7 @@ int main(int argc, char *argv[])
 	init_txfilter(ld->wallet, ld->owned_txfilter);
 
 	/*~ Get the blockheight we are currently at, UINT32_MAX is used to signal
-	 * an uninitialized wallet and that we should start off of bitcoind's
+	 * an uninitialized wallet and that we should start off of beyondcoind's
 	 * current height */
 	wallet_blocks_heights(ld->wallet, UINT32_MAX,
 			      &min_blockheight, &max_blockheight);
@@ -770,7 +770,7 @@ int main(int argc, char *argv[])
 	db_commit_transaction(ld->wallet->db);
 
 	/*~ Initialize block topology.  This does its own io_loop to
-	 * talk to bitcoind, so does its own db transactions. */
+	 * talk to beyondcoind, so does its own db transactions. */
 	setup_topology(ld->topology, ld->timers,
 		       min_blockheight, max_blockheight);
 
@@ -826,7 +826,7 @@ int main(int argc, char *argv[])
 	activate_peers(ld);
 
 	/*~ Now that all the notifications for transactions are in place, we
-	 *  can start the poll loop which queries bitcoind for new blocks. */
+	 *  can start the poll loop which queries beyondcoind for new blocks. */
 	begin_topology(ld->topology);
 
 	/*~ To handle --daemon, we fork the daemon early (otherwise we hit
