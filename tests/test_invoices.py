@@ -41,13 +41,13 @@ def test_invoice(node_factory, chainparams):
     # Check any-amount invoice
     inv = l1.rpc.invoice("any", 'label2', 'description2')
     b11 = inv['bolt11']
-    # Amount usually comes after currency (bcrt in our case),
+    # Amount usually comes after currency (byndrt in our case),
     # but an any-amount invoices will have no amount
     assert b11.startswith("ln" + chainparams['bip173_prefix'])
     # By bech32 rules, the last '1' digit is the separator
     # between the human-readable and data parts. We want
-    # to match the "lnbcrt1" above with the '1' digit as the
-    # separator, and not for example "lnbcrt1m1....".
+    # to match the "lnbyndrt1" above with the '1' digit as the
+    # separator, and not for example "lnbyndrt1m1....".
     assert b11.count('1') == 1
     # There's no incoming channel, so no routeboost
     assert 'routes' not in b11
