@@ -65,7 +65,7 @@ class Millisatoshi:
 
     def to_btc(self):
         """
-        Return a Decimal representing the number of bitcoin
+        Return a Decimal representing the number of beyondcoin
         """
         return Decimal(self.millisatoshis) / 1000 / 10**8
 
@@ -467,7 +467,7 @@ class LightningRpc(UnixDomainSocketRpc):
 
     def dev_rescan_outputs(self):
         """
-        Synchronize the state of our funds with bitcoind
+        Synchronize the state of our funds with beyondcoind
         """
         return self.call("dev-rescan-outputs")
 
@@ -950,7 +950,7 @@ class LightningRpc(UnixDomainSocketRpc):
     def withdraw(self, destination, satoshi, feerate=None, minconf=None, utxos=None):
         """
         Send to {destination} address {satoshi} (or "all")
-        amount via Bitcoin transaction. Only select outputs
+        amount via Beyondcoin transaction. Only select outputs
         with {minconf} confirmations
         """
         payload = {
@@ -977,7 +977,7 @@ class LightningRpc(UnixDomainSocketRpc):
 
     def txprepare(self, *args, **kwargs):
         """
-        Prepare a bitcoin transaction which sends to [outputs].
+        Prepare a beyondcoin transaction which sends to [outputs].
         The format of output is like [{address1: amount1},
         {address2: amount2}], or [{address: "all"}]).
         Only select outputs with {minconf} confirmations.
@@ -1004,7 +1004,7 @@ class LightningRpc(UnixDomainSocketRpc):
 
     def txdiscard(self, txid):
         """
-        Cancel a bitcoin transaction returned from txprepare.  The outputs
+        Cancel a beyondcoin transaction returned from txprepare.  The outputs
         it was spending are released for other use.
         """
         payload = {
@@ -1014,7 +1014,7 @@ class LightningRpc(UnixDomainSocketRpc):
 
     def txsend(self, txid):
         """
-        Sign and broadcast a bitcoin transaction returned from txprepare.
+        Sign and broadcast a beyondcoin transaction returned from txprepare.
         """
         payload = {
             "txid": txid

@@ -1454,7 +1454,7 @@ def test_gossip_store_compact_on_load(node_factory, bitcoind):
 
 
 def test_gossip_announce_invalid_block(node_factory, bitcoind):
-    """bitcoind lags and we might get an announcement for a block we don't have.
+    """beyondcoind lags and we might get an announcement for a block we don't have.
 
     """
     # Need to slow down the poll interval so the announcement preceeds the

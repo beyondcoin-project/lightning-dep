@@ -272,7 +272,7 @@ int main(int argc, char *argv[])
 	struct sha256_double hash;
 
 	setup_locale();
-	chainparams = chainparams_for_network("bitcoin");
+	chainparams = chainparams_for_network("beyondcoin");
 
 	secp256k1_ctx = secp256k1_context_create(SECP256K1_CONTEXT_VERIFY |
 						 SECP256K1_CONTEXT_SIGN);

@@ -19,7 +19,7 @@ currently unreleased features by checking out the c-lightning source code and
 installing into your python3 environment:
 
 ```bash
-git clone https://github.com/ElementsProject/lightning.git
+git clone https://github.com/beyondcoin-project/lightning.git
 cd lightning/contrib/pylightning
 python3 setup.py develop
 ```

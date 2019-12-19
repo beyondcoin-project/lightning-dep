@@ -53,10 +53,10 @@ else
 fi
 
 if [ -z "$PATH_TO_BITCOIN" ]; then
-	if [ -d "$HOME/.bitcoin" ]; then
-		PATH_TO_BITCOIN="$HOME/.bitcoin"
+	if [ -d "$HOME/.beyondcoin" ]; then
+		PATH_TO_BITCOIN="$HOME/.beyondcoin"
 	else
-		echo "\$PATH_TO_BITCOIN not set to a .bitcoin dir?" >&2
+		echo "\$PATH_TO_BITCOIN not set to a .beyondcoin dir?" >&2
 		return
 	fi
 fi
@@ -87,8 +87,8 @@ alias l1-log='less /tmp/l1-regtest/log'
 alias l2-log='less /tmp/l2-regtest/log'
 
 start_ln() {
-	# Start bitcoind in the background
-	test -f "$PATH_TO_BITCOIN/regtest/bitcoind.pid" || \
+	# Start beyondcoind in the background
+	test -f "$PATH_TO_BITCOIN/regtest/beyondcoind.pid" || \
 		bitcoind -daemon -regtest -txindex
 
 	# Wait for it to start.
@@ -116,9 +116,9 @@ stop_ln() {
 	test ! -f /tmp/l2-regtest/lightningd-regtest.pid || \
 		(kill "$(cat /tmp/l2-regtest/lightningd-regtest.pid)"; \
 		rm /tmp/l2-regtest/lightningd-regtest.pid)
-	test ! -f "$PATH_TO_BITCOIN/regtest/bitcoind.pid" || \
-		(kill "$(cat "$PATH_TO_BITCOIN/regtest/bitcoind.pid")"; \
-		rm "$PATH_TO_BITCOIN/regtest/bitcoind.pid")
+	test ! -f "$PATH_TO_BITCOIN/regtest/beyondcoind.pid" || \
+		(kill "$(cat "$PATH_TO_BITCOIN/regtest/beyondcoind.pid")"; \
+		rm "$PATH_TO_BITCOIN/regtest/beyondcoind.pid")
 }
 
 cleanup_ln() {

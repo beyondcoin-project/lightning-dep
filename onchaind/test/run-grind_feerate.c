@@ -206,13 +206,13 @@ int main(int argc, char *argv[])
 	secp256k1_ctx = secp256k1_context_create(SECP256K1_CONTEXT_VERIFY
 						 | SECP256K1_CONTEXT_SIGN);
 	setup_tmpctx();
-	chainparams = chainparams_for_network("bitcoin");
+	chainparams = chainparams_for_network("beyondcoin");
 	tx = bitcoin_tx_from_hex(tmpctx, "0200000001e1ebca08cf1c301ac563580a1126d5c8fcb0e5e2043230b852c726553caf1e1d0000000000000000000160ae0a000000000022002082e03c5a9cb79c82cd5a0572dc175290bc044609aabe9cc852d61927436041796d000000",
 				 strlen("0200000001e1ebca08cf1c301ac563580a1126d5c8fcb0e5e2043230b852c726553caf1e1d0000000000000000000160ae0a000000000022002082e03c5a9cb79c82cd5a0572dc175290bc044609aabe9cc852d61927436041796d000000"));
 	tx->chainparams = chainparams_for_network("regtest");
 	tx->input_amounts[0] = tal(tx, struct amount_sat);
 	*tx->input_amounts[0] = AMOUNT_SAT(700000);
-	tx->chainparams = chainparams_for_network("bitcoin");
+	tx->chainparams = chainparams_for_network("beyondcoin");
 	der = tal_hexdata(tmpctx, "30450221009b2e0eef267b94c3899fb0dc7375012e2cee4c10348a068fe78d1b82b4b14036022077c3fad3adac2ddf33f415e45f0daf6658b7a0b09647de4443938ae2dbafe2b9" "01",
 			  strlen("30450221009b2e0eef267b94c3899fb0dc7375012e2cee4c10348a068fe78d1b82b4b14036022077c3fad3adac2ddf33f415e45f0daf6658b7a0b09647de4443938ae2dbafe2b9" "01"));
 	if (!signature_from_der(der, tal_count(der), &sig))

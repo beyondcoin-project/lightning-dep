@@ -1171,7 +1171,7 @@ static struct command_result *json_fund_channel_start(struct command *cmd,
 
 	if (!topology_synced(cmd->ld->topology)) {
 		return command_fail(cmd, FUNDING_STILL_SYNCING_BITCOIN,
-				    "Still syncing with bitcoin network");
+				    "Still syncing with beyondcoin network");
 	}
 
 	peer = peer_by_id(cmd->ld, id);

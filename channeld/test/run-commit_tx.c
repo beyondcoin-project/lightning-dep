@@ -471,7 +471,7 @@ int main(void)
 	secp256k1_ctx = secp256k1_context_create(SECP256K1_CONTEXT_VERIFY
 						 | SECP256K1_CONTEXT_SIGN);
 	setup_tmpctx();
-	chainparams = chainparams_for_network("bitcoin");
+	chainparams = chainparams_for_network("beyondcoin");
 
 	htlcs = setup_htlcs(tmpctx);
 	inv_htlcs = invert_htlcs(htlcs);

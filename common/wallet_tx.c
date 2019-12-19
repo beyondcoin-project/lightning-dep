@@ -112,7 +112,7 @@ static struct command_result *check_amount(const struct wallet_tx *wtx,
 		 * syncing yet, report a sync timing error first */
 		if (!topology_synced(wtx->cmd->ld->topology))
 			return command_fail(wtx->cmd, FUNDING_STILL_SYNCING_BITCOIN,
-					    "Still syncing with bitcoin network");
+					    "Still syncing with beyondcoin network");
 
 		return command_fail(wtx->cmd, FUND_CANNOT_AFFORD,
 				    "Cannot afford transaction");

@@ -9,19 +9,19 @@
 
 [Unit]
 Description=C-Lightning daemon
-Requires=bitcoind.service
-After=bitcoind.service
+Requires=beyondcoind.service
+After=beyondcoind.service
 Wants=network-online.target
 After=network-online.target
 
 [Service]
 ExecStart=/usr/bin/lightningd --daemon --conf /etc/lightningd/lightningd.conf --pid-file=/run/lightningd/lightningd.pid
 
-# Creates /run/lightningd owned by bitcoin
+# Creates /run/lightningd owned by beyondcoin
 RuntimeDirectory=lightningd
 
-User=bitcoin
-Group=bitcoin
+User=beyondcoin
+Group=beyondcoin
 Type=forking
 PIDFile=/run/lightningd/lightningd.pid
 Restart=on-failure

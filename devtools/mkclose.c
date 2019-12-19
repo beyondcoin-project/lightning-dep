@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 	struct bitcoin_tx *tx;
 	u8 **witness;
 	const u8 *funding_wscript;
-	const struct chainparams *chainparams = chainparams_for_network("bitcoin");
+	const struct chainparams *chainparams = chainparams_for_network("beyondcoin");
 	const struct amount_sat dust_limit = AMOUNT_SAT(546);
 
 	setup_locale();

@@ -53,7 +53,7 @@ static void hexeq(const void *p, size_t len, const char *hex)
 int main(void)
 {
 	setup_locale();
-	chainparams = chainparams_for_network("bitcoin");
+	chainparams = chainparams_for_network("beyondcoin");
 
 	struct bitcoin_tx *tx;
 
